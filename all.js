@@ -64,7 +64,20 @@ function addData() {
     })
 
     console.log(data);
+
+    // 按下新增套票按鈕後，表單的value要清空，使用 form 的 這個 reset method
+    const form = document.querySelector(".addTicket-form");
+    form.reset();
+
     render(); // 重新渲染
+}
+
+// 本次搜尋幾筆資料
+function searchNum(cacheData) {
+    // console.log(cacheData.length);
+    const searchNum = document.querySelector("#searchResult-text");
+    console.log(searchNum);
+    searchNum.innerHTML = `本次搜尋共 ${cacheData.length} 筆資料`
 }
 
 // 初始化
@@ -82,6 +95,7 @@ function render(regionData) {
     })
     console.log(cacheData);
 
+    // 用篩選完的跑，組資料
     cacheData.forEach(item => {
         str += `<li class="ticketCard">
             <div class="ticketCard-img">
@@ -113,16 +127,12 @@ function render(regionData) {
     </li>`
     })
 
-    const searchNum = document.querySelector("#searchResult-text");
-    console.log(searchNum);
-
     list.innerHTML = str;
-
-    // console.log(cacheData.length);
-    searchNum.innerHTML = `本次搜尋共 ${cacheData.length} 筆資料`
+    searchNum(cacheData)
 
 };
 render();
+
 
 
 

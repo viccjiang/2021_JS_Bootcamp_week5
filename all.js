@@ -51,6 +51,7 @@ function addData() {
     const rate = document.querySelector('#ticketRate');
     const description = document.querySelector('#ticketDescription');
 
+    // 將資料新增到 data 中，依照 data 的資料格式 => 一定要依照物件的 「屬性:值 」的方式新增進去
     data.push({
         id: Date.now(), // 時間戳
         name: name.value,
@@ -61,27 +62,25 @@ function addData() {
         rate: parseInt(rate.value),
         description: description.value
     })
+
     console.log(data);
-    render();
-
-
+    render(); // 重新渲染
 }
 
 // 初始化
 function render(regionData) {
-    let str = "";
-
-    // filter
-    const cacheData = data.filter((item) => {
+    let str = ""; // 準備組資料
+    // 先用 filter 篩選  data 內的資料，用 cacheData 接住篩選後的資料集
+    const cacheData = data.filter((item) => { // 箭頭函式 function(item)
         // console.log(item);
         if (regionData == item.area) {
             return item;
         }
-        if (!regionData) {
+        if (!regionData) { // 不是上面選到的
             return item;
         }
-
     })
+    console.log(cacheData);
 
     cacheData.forEach(item => {
         str += `<li class="ticketCard">
@@ -114,16 +113,22 @@ function render(regionData) {
     </li>`
     })
 
+    const searchNum = document.querySelector("#searchResult-text");
+    // console.log(searchNum);
+
     list.innerHTML = str;
+
+    // console.log(cacheData.length);
+    searchNum.innerHTML = `本次搜尋共 ${cacheData.length} 筆資料`
+
 };
-
-
-
 render();
+
+
 
 const regionSearch = document.querySelector(".regionSearch");
 // console.log(regionSearch);
 regionSearch.addEventListener("change", function () {
-    console.log(regionSearch.value);
-    render(regionSearch.value);
+    console.log(regionSearch.value); // 搜尋欄的值
+    render(regionSearch.value); // 帶入搜尋欄選到的值，進行渲染畫面
 })

@@ -114,7 +114,7 @@ function render(regionData) {
     })
 
     const searchNum = document.querySelector("#searchResult-text");
-    // console.log(searchNum);
+    console.log(searchNum);
 
     list.innerHTML = str;
 

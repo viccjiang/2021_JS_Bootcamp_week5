@@ -37,9 +37,8 @@ const list = document.querySelector(".ticketCard-area");
 // 綁定新增套票按鈕
 const addBtn = document.querySelector('.addTicket-btn')
 
-// 點擊按鈕，監聽事件
+// 點擊按鈕，監聽事件，點擊之後觸發新增資料的函式
 addBtn.addEventListener("click", addData);
-
 // 點擊按鈕，新增套票的資訊 input value 
 function addData() {
     // level 3 綁定表單填寫欄位
@@ -51,7 +50,7 @@ function addData() {
     const rate = document.querySelector('#ticketRate');
     const description = document.querySelector('#ticketDescription');
 
-    // 將資料新增到 data 中，依照 data 的資料格式 => 一定要依照物件的 「屬性:值 」的方式新增進去
+    // 將資料新增到 原有的 data 中，依照 data 的資料格式 => 一定要依照物件的 「屬性:值 」的方式新增進去
     data.push({
         id: Date.now(), // 時間戳
         name: name.value,
@@ -62,13 +61,11 @@ function addData() {
         rate: parseInt(rate.value),
         description: description.value
     })
-
     console.log(data);
-
     // 按下新增套票按鈕後，表單的value要清空，使用 form 的 這個 reset method
     const form = document.querySelector(".addTicket-form");
     form.reset();
-
+    regionSearch.value = "全部地區"; // 因為新增套票後套票卡片區（.ticketCard-area）會顯示所有套票，所以建議可以將 .regionSearch 切換成全部地區
     render(); // 重新渲染
 }
 
@@ -82,17 +79,24 @@ function searchNum(cacheData) {
 
 // 初始化
 function render(regionData) {
+
     let str = ""; // 準備組資料
+
     // 先用 filter 篩選  data 內的資料，用 cacheData 接住篩選後的資料集
     const cacheData = data.filter((item) => { // 箭頭函式 function(item)
         // console.log(item);
+
         if (regionData == item.area) {
             return item;
         }
-        if (!regionData) { // 不是上面選到的
+        if (regionData == "全部地區") { // 地區搜尋全部地區時
+            return item;
+        }
+        if (!regionData) { // 地區搜尋，尚未篩選時狀態
             return item;
         }
     })
+
     console.log(cacheData);
 
     // 用篩選完的跑，組資料
@@ -135,10 +139,12 @@ render();
 
 
 
-
 const regionSearch = document.querySelector(".regionSearch");
-// console.log(regionSearch);
+console.log(regionSearch);
 regionSearch.addEventListener("change", function () {
     console.log(regionSearch.value); // 搜尋欄的值
+
     render(regionSearch.value); // 帶入搜尋欄選到的值，進行渲染畫面
+
+
 })
